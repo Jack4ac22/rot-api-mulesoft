@@ -191,15 +191,15 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="6bba0a36-bd6f-44a0-b3ce-478494ef1715" variableName="errorMessage" />
 			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="7093e667-8f28-4c56-8178-291cebd7e829" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:UNPROCESSABLE_ENTITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ca8e891b-5f1f-4d0d-b004-514d2s0e2f9fe">
+
+
+		<!-- If none of the above matches then handle a the exception using generic handler -->
+		<on-error-continue type="PERSONAL:UNPROCESSABLE_ENTITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ca8e891b-5f1f-4d0d-b004-514d2s0e2f9fe">
 			<set-variable value="#[422]" doc:name="Set the HTTP Status - 422" doc:id="ca8e891b-5f1f-4d3d-b004-514d20e9f9se" variableName="httpStatus" />
 			<set-variable value="UNPROCESSABLE_ENTITY" doc:name="Set Error Code" doc:id="ca8eh94b-3f1f-4d0d-b004-514d20e9f9fe" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="ca8e891b-5f1f-4d0d-b004-512d20esf9he" variableName="errorMessage" />
 			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ca8e891b-5f1f-4d0d-r004-514d20e9f13fe" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-
-
-		<!-- If none of the above matches then handle a the exception using generic handler -->
 		<on-error-continue type="ANY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fcb6c8d7-4930-46cd-b602-b6df18d8492c">
 			<set-variable value="#[500]" doc:name="Set HTTP Status - 500" variableName="httpStatus" />
 			<set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="058ea0e6-b2bb-44f7-a966-20f6eeb44cfb" variableName="errorCode" />

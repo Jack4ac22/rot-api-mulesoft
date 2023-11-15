@@ -50,13 +50,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>2686bf73-c025-4e7a-a526-0c646f2a2471</groupId>
-			<artifactId>roh-users-interaction-sapi</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.8.2</version>
@@ -84,6 +77,13 @@
 			<artifactId>mule-service-weave-ee</artifactId>
 			<version>2.4.0-20221212</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>2686bf73-c025-4e7a-a526-0c646f2a2471</groupId>
+			<artifactId>roh-users-interaction-sapi</artifactId>
+			<version>1.0.2</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 	<repositories>

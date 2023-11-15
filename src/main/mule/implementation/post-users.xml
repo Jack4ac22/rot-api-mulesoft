@@ -23,43 +23,32 @@ output application/json
 				<![CDATA[#[vars.email_search_query]]]>
 			</mongo:query>
 		</mongo:find-documents>
-		<choice doc:name="Choice" doc:id="c52d9590-c16d-44e4-aef6-90c2f7b7ba6d">
+		<choice doc:name="choice based on the email usage in the database" doc:id="c52d9590-c16d-44e4-aef6-90c2f7b7ba6d">
 			<when expression="#[sizeOf(vars.email_search_resonse) &gt; 0]">
-				<raise-error doc:name="Raise error" doc:id="aadefba5-6885-471d-8d37-cab532449dd0" type="HTTP:UNPROCESSABLE_ENTITY" description="Email is already used." />
+				<raise-error doc:name="Raise error" doc:id="aadefba5-6885-471d-8d37-cab532449dd0" type="PERSONAL:UNPROCESSABLE_ENTITY" description="Email is already used." />
 			</when>
 			<otherwise>
 				<ee:transform doc:name="prepare the body of the user with the default fields" doc:id="84024c52-2eec-4638-9b56-5a5158058eee">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 import dw::Crypto
-output application/json
+output application/json skipNullOn="everywhere"
+var hashedPassword = Crypto::SHA1(payload.password as Binary)
 ---
-payload mapObject (value, key) -> {
-    (key): if (key == "password") Crypto::hashWith(value, 'SHA-256') else value
-} ++
-{
+payload ++ {hashedPassword: hashedPassword} -- {password: payload.password}
+++ {
   "status": "pending",
   "role": "user",
   "created_at": now(),
-  "last-activity": "",
-  "last-update": "",
+  "last-activity": null,
+  "last-update": null,
   "activated_at": now()
 }]]>
 						</ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<mongo:insert-document doc:name="Insert document" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" />
+				<mongo:insert-document doc:name="Insert the user and prepare the returned value" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" targetValue='#[output application/json skipNullOn="everywhere"&#10;---&#10;payload -- {password: payload.password}]'/>
 			</otherwise>
 		</choice>
-		<ee:transform doc:name="Transform Message" doc:id="ba893c08-6237-434d-be65-31de8c4e5cee">
-			<ee:message>
-				<ee:set-payload>
-					<![CDATA[%dw 2.0
-output application/json
----
-payload]]>
-				</ee:set-payload>
-			</ee:message>
-		</ee:transform>
 	</flow>
 </mule>

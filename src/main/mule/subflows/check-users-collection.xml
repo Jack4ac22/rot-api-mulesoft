@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mo
 				<logger level="INFO" doc:name="User Collection  Available" doc:id="fe9e29ae-1fbd-4c8c-8d3a-cabc2e6868f3" message="The users collection is available and ready for use." />
 				<mongo:list-indexes collectionName="${mongoDb.collections.users}" doc:name="List indexes" doc:id="326027f1-6e01-4966-9960-8d4a65914aa3" config-ref="MongoDB_Config_Secured" target="users_indexes_list" targetValue="#[output application/json&#10;---&#10;payload]"/>
 				<choice doc:name="Choice" doc:id="6a6f760a-3e49-45fa-ae18-1bccdca63ea4" >
-					<when expression='#[(contains(vars.users_indexes_list, {&#10;    "fieldName": "_id",&#10;    "name": "_id_",&#10;    "order": "ASC"&#10;  }) and sizeOf(vars.users_indexes_list) == 1)]' >
+					<when expression='#[(!contains(vars.users_indexes_list, {&#10;    "fieldName": "email",&#10;    "name": "email_1",&#10;    "order": "ASC"&#10;  }))]' >
 						<logger level="INFO" doc:name="User Collection indexes is Not correct" doc:id="4aaa45a8-2914-4aca-a807-4be9a377a411" message="The indexes of users collection is not correct. A new index will be added to the collection." />
 						<mongo:create-index collectionName="${mongoDb.collections.users}" fieldName="email" doc:name="Create index" doc:id="09ed8965-3d2b-4ae6-86d8-2d197e684179" config-ref="MongoDB_Config_Secured" target="create_index_response"/>
 						<logger level="INFO" doc:name="display the idexes" doc:id="b52c2452-3d36-46cf-afb2-fad79d84d82c" message="#[vars.create_index_response]"/>

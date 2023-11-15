@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-    <apikit:config name="roh-users-interaction-sapi-config" api="resource::2686bf73-c025-4e7a-a526-0c646f2a2471:roh-users-interaction-sapi:1.0.0:raml:zip:roh-users-interaction-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="roh-users-interaction-sapi-config" api="resource::2686bf73-c025-4e7a-a526-0c646f2a2471:roh-users-interaction-sapi:1.0.2:raml:zip:roh-users-interaction-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="roh-users-interaction-sapi-main">
         <http:listener config-ref="HTTP_Listener_config" path="/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -13,26 +13,26 @@
         </http:listener>
         <logger level="INFO" doc:name="Method and Uri" doc:id="4c718a96-d6d1-4a95-8bce-32422ba5a30b" message="#[attributes.method ++ ' ' ++ attributes.requestUri]" />
         <set-variable value="#[attributes.maskedRequestPath]" doc:name="endpoint" doc:id="2683b26b-318f-4e37-82cf-0eaab2317c67" variableName="endpoint" />
-		<apikit:router config-ref="roh-users-interaction-sapi-config" />
-		<set-variable value="#[(vars.outboundHeaders default {}) ++ {'x-correlation-id': correlationId}]" doc:name="outboundHeaders" doc:id="de838163-2833-4eb1-8cca-7e9ffca1ada8" variableName="outboundHeaders" mimeType="application/java" />
+        <apikit:router config-ref="roh-users-interaction-sapi-config" />
+        <set-variable value="#[(vars.outboundHeaders default {}) ++ {'x-correlation-id': correlationId}]" doc:name="outboundHeaders" doc:id="de838163-2833-4eb1-8cca-7e9ffca1ada8" variableName="outboundHeaders" mimeType="application/java" />
         <logger level="INFO" doc:name="Response status" doc:id="9993786f-0f1f-41f4-ba44-3812f8f0464c" message="#['Responding with HTTP Status ' ++ vars.httpStatus]" />
     </flow>
     <flow name="get:\health-check:roh-users-interaction-sapi-config">
-		<flow-ref doc:name="Health" doc:id="78e72359-fd4c-4f29-8bbd-4e3fe561a722" name="Health"/>
+        <flow-ref doc:name="Health" doc:id="78e72359-fd4c-4f29-8bbd-4e3fe561a722" name="Health" />
     </flow>
-	<flow name="get:\v1\users:roh-users-interaction-sapi-config">
-        <set-payload value="#[output application/json&#10;---&#10;{'message': &quot;ok&quot;}]" doc:name="Set Payload" doc:id="e53fd778-dc2b-4759-92ec-ac8953e9e6bb" />
-		<logger level="INFO" message="get:\v1\users:roh-users-interaction-sapi-config" />
+    <flow name="get:\v1\users:roh-users-interaction-sapi-config">
+        <set-payload value="#[output application/json&#xA;---&#xA;{'message': &quot;ok&quot;}]" doc:name="Set Payload" doc:id="e53fd778-dc2b-4759-92ec-ac8953e9e6bb" />
+        <logger level="INFO" message="get:\v1\users:roh-users-interaction-sapi-config" />
     </flow>
-	<flow name="post:\v1\users:application\json:roh-users-interaction-sapi-config">
+    <flow name="post:\v1\users:application\json:roh-users-interaction-sapi-config">
         <logger level="INFO" message="post:\v1\users:application\json:roh-users-interaction-sapi-config" />
-		<flow-ref doc:name="Flow Reference" doc:id="634fb233-93a7-4627-aca2-caf15f574cab" name="post-usersFlow" />
+        <flow-ref doc:name="Flow Reference" doc:id="634fb233-93a7-4627-aca2-caf15f574cab" name="post-usersFlow" />
     </flow>
-	<flow name="post:\v1\users\login:roh-users-interaction-sapi-config">
+    <flow name="post:\v1\users\login:roh-users-interaction-sapi-config">
         <logger level="INFO" message="#[payload]" />
-		<flow-ref doc:name="Flow Reference" doc:id="b1918a5e-f98f-44fc-8c84-69141d7b7b9a" name="post-usersFlow"/>
+        <flow-ref doc:name="Flow Reference" doc:id="b1918a5e-f98f-44fc-8c84-69141d7b7b9a" name="post-usersFlow" />
     </flow>
-	<flow name="put:\v1\users\(id)\role:application\json:roh-users-interaction-sapi-config">
+    <flow name="put:\v1\users\(id)\role:application\json:roh-users-interaction-sapi-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
@@ -48,7 +48,7 @@
         </ee:transform>
         <logger level="INFO" message="put:\v1\users\(id)\status:application\json:roh-users-interaction-sapi-config" />
     </flow>
-	<flow name="put:\v1\users\(id):application\json:roh-users-interaction-sapi-config">
+    <flow name="put:\v1\users\(id):application\json:roh-users-interaction-sapi-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
