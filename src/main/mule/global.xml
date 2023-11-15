@@ -15,9 +15,6 @@ http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mo
 	<global-property doc:name="Global Property" doc:id="b9e2b509-fada-448e-8483-084562cdea9f" name="mule.secure.key" value="45254532632133465"/>
  	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="3b800d4b-7005-4522-ad43-34d0c4c8b221" flowRef="roh-users-interaction-sapi-main"/>
 	<global-property doc:name="Global Property" doc:id="4fc28f88-5a77-4f97-8bea-e2ad874e2e67" name="mule.env" value="loc" />
-	<mongo:config name="MongoDB_Config_String" doc:name="MongoDB Config" doc:id="f86e0efd-18e6-4dd2-afd7-0b3e557de541" >
-		<mongo:connection-string-connection connectionString="mongodb+srv://new_user_test:gEodjUPFY4KUT8dy@mulesoftconnect.ujqssri.mongodb.net/mulesoftConnect?retryWrites=true&amp;w=majority" />
-	</mongo:config>
 		<mongo:config name="MongoDB_Config_Secured" doc:name="MongoDB secured config" doc:id="2543568b-4a4a-41a7-b2cc-2b1b0423cdac" >
 		<mongo:connection-string-connection connectionString="mongodb+srv://${mongoDb.userName}:${mongoDb.password}@${mongoDb.dataBase}.ujqssri.mongodb.net/mulesoftConnect?retryWrites=true&amp;w=majority" />
 	</mongo:config>
