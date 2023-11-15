@@ -15,3 +15,5 @@ mongoDb:
   dataBase: ${secure::mongoDb.dataBase}
   userName: ${secure::mongoDb.userName}
   password: ${secure::mongoDb.password}
+  collections:
+    users: "users"

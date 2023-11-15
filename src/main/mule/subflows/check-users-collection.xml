@@ -5,8 +5,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
 	<sub-flow name="check-users-collection-Sub_Flow" doc:id="ae0729b3-487b-4544-95ba-685cc254aeb9" >
-		<logger level="INFO" doc:name="Start check users collection subflow" doc:id="18dba70d-5fa3-4404-9b5d-664b85fc63c2" message="check users collection started"/>
-		<mongo:collection-exists collectionName="users" doc:name="Collection exists" doc:id="718350e2-3c68-4acb-85bb-56838984f45f" config-ref="MongoDB_Config_Secured"/>
-		<logger level="INFO" doc:name="End check users collection subflow" doc:id="952dda82-af39-4df8-8cb9-166bae9d4c94" message="#[payload]"/>
+		<logger level="INFO" doc:name="Start check users collection subflow" doc:id="18dba70d-5fa3-4404-9b5d-664b85fc63c2" message="check users collection started."/>
+		<mongo:collection-exists collectionName="${mongoDb.collections.users}" doc:name="Collection exists" doc:id="718350e2-3c68-4acb-85bb-56838984f45f" config-ref="MongoDB_Config_Secured" target="users_collection_exists"/>
+		<choice doc:name="Choice" doc:id="7c2b28fc-b9e9-45ab-bb5e-0f8ab20a4198" >
+			<when expression="#[!vars.users_collection_exists]">
+				<logger level="INFO" doc:name="User Collection Not available" doc:id="f6959ef7-e906-4e5f-a72d-6269d7ec1b86" message="The users collection is not available. A new collection will be created."/>
+				<mongo:create-collection doc:name="Create users collection" doc:id="b2128089-bbd8-4d9c-8a9e-2eb6afdfd2d6" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" />
+				<logger level="INFO" doc:name="Logger" doc:id="1282f1a3-0d1a-4b53-a452-39a2defe447f" message='Users collection is succesfully created and ready to be used.'/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="User Collection  Available" doc:id="fe9e29ae-1fbd-4c8c-8d3a-cabc2e6868f3" message="The users collection is available and ready for use." />
+				<mongo:list-indexes collectionName="${mongoDb.collections.users}" doc:name="List indexes" doc:id="326027f1-6e01-4966-9960-8d4a65914aa3" config-ref="MongoDB_Config_Secured" target="users_indexes_list" targetValue="#[output application/json&#10;---&#10;payload]"/>
+				<choice doc:name="Choice" doc:id="6a6f760a-3e49-45fa-ae18-1bccdca63ea4" >
+					<when expression='#[(contains(vars.users_indexes_list, {&#10;    "fieldName": "_id",&#10;    "name": "_id_",&#10;    "order": "ASC"&#10;  }) and sizeOf(vars.users_indexes_list) == 1)]' >
+						<logger level="INFO" doc:name="User Collection indexes is Not correct" doc:id="4aaa45a8-2914-4aca-a807-4be9a377a411" message="The indexes of users collection is not correct. A new index will be added to the collection." />
+						<mongo:create-index collectionName="${mongoDb.collections.users}" fieldName="email" doc:name="Create index" doc:id="09ed8965-3d2b-4ae6-86d8-2d197e684179" config-ref="MongoDB_Config_Secured" target="create_index_response"/>
+						<logger level="INFO" doc:name="display the idexes" doc:id="b52c2452-3d36-46cf-afb2-fad79d84d82c" message="#[vars.create_index_response]"/>
+						<logger level="INFO" doc:name="Users' collection indexes updated" doc:id="979c8c43-4037-48cf-b13f-392dce6313b8" message="Users' collection indexes is succesfully updated and ready to be used." />
+					</when>
+					<otherwise >
+						<logger level="INFO" doc:name="User Collection indexes is correct" doc:id="b2cea3b1-eecb-44d8-bb51-0d5f0a875feb" message="The indexes of users collection is correct: #[vars.users_indexes_list]" />
+					</otherwise>
+				</choice>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="End check users collection subflow" doc:id="952dda82-af39-4df8-8cb9-166bae9d4c94" message="check users collection ended"/>
 	</sub-flow>
 </mule>

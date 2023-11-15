@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 
@@ -11,37 +8,37 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<error-handler name="globalError_Handler" doc:id="2749082e-1b48-47f7-9438-130609141c14">
 
 		<!-- APIKit router related exceptions -->
-		<on-error-continue type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f10fd73f-defe-42ee-b696-64daa982aca9" >
-			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="6baca152-74cf-4ca3-be8e-91b92874e02f" variableName="httpStatus"/>
-      <set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="154ef2bc-770d-433d-83f2-bac573b8c4a7" variableName="errorCode"/>
+		<on-error-continue type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f10fd73f-defe-42ee-b696-64daa982aca9">
+			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="6baca152-74cf-4ca3-be8e-91b92874e02f" variableName="httpStatus" />
+			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="154ef2bc-770d-433d-83f2-bac573b8c4a7" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="eeb4ab62-4dd4-47b9-b803-e215b9d9c779" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="faf9f1e2-06bb-4c81-bd5a-fd68d007f7d0" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="faf9f1e2-06bb-4c81-bd5a-fd68d007f7d0" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="APIKIT:METHOD_NOT_ALLOWED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5920f82e-4287-4245-bc85-f1b1973fc623" >
+		<on-error-continue type="APIKIT:METHOD_NOT_ALLOWED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5920f82e-4287-4245-bc85-f1b1973fc623">
 			<set-variable value="#[405]" doc:name="Set the HTTP Status - 405" doc:id="aa502bbb-c1fb-4aed-9a3b-460563a45031" variableName="httpStatus" />
-      <set-variable value="METHOD_NOT_ALLOWED" doc:name="Set Error Code" doc:id="7430147e-a68d-4c61-a7c6-b9981ff77b1e" variableName="errorCode"/>
-			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="9df050ad-95f9-4052-bec1-42147d20766e" variableName="errorMessage"/>
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="f8050a53-7fc2-4953-8411-e3ed84a7fce4" name="global-prepare-error-response-sub-flow"/>
+			<set-variable value="METHOD_NOT_ALLOWED" doc:name="Set Error Code" doc:id="7430147e-a68d-4c61-a7c6-b9981ff77b1e" variableName="errorCode" />
+			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="9df050ad-95f9-4052-bec1-42147d20766e" variableName="errorMessage" />
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="f8050a53-7fc2-4953-8411-e3ed84a7fce4" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a6671035-400a-4848-8096-96d1938e725f" >
+		<on-error-continue type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a6671035-400a-4848-8096-96d1938e725f">
 			<set-variable value="#[406]" doc:name="Set the HTTP Status - 406" doc:id="84617bd9-8f46-453e-b1c0-d84b01db29ca" variableName="httpStatus" />
-      <set-variable value="NOT_ACCEPTABLE" doc:name="Set Error Code" doc:id="1e92f781-1fb1-4289-9417-e8f52993c346" variableName="errorCode" />
+			<set-variable value="NOT_ACCEPTABLE" doc:name="Set Error Code" doc:id="1e92f781-1fb1-4289-9417-e8f52993c346" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="8ab6b10e-c803-4465-ad34-f36b19d387df" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="de39fae7-47ba-40c9-85de-5b3eea254510" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="de39fae7-47ba-40c9-85de-5b3eea254510" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="APIKIT:NOT_FOUND" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1e659c22-391f-46e0-90e9-416f6c8a2692" >
+		<on-error-continue type="APIKIT:NOT_FOUND" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1e659c22-391f-46e0-90e9-416f6c8a2692">
 			<set-variable value="#[404]" doc:name="Set the HTTP Status - 404" doc:id="93dbe042-7661-41fb-9cb3-27549e17bf1d" variableName="httpStatus" />
-      <set-variable value="NOT_FOUND" doc:name="Set Error Code" doc:id="cbe3ee2f-a95c-4c1b-aac1-9b025bd38ceb" variableName="errorCode" />
+			<set-variable value="NOT_FOUND" doc:name="Set Error Code" doc:id="cbe3ee2f-a95c-4c1b-aac1-9b025bd38ceb" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="c014b4f9-fb79-40b9-ad05-2c856897d46b" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="cb9bd32c-6f76-43bd-911e-2560811c5035" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="cb9bd32c-6f76-43bd-911e-2560811c5035" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="APIKIT:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="311df0ac-9edb-4f87-b981-fba06936b47a" >
+		<on-error-continue type="APIKIT:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="311df0ac-9edb-4f87-b981-fba06936b47a">
 			<set-variable value="#[415]" doc:name="Set the HTTP Status - 415" doc:id="9e0eac59-05ec-49a2-8772-d2ab0fc41cf1" variableName="httpStatus" />
-      <set-variable value="UNSUPPORTED_MEDIA_TYPE" doc:name="Set Error Code" doc:id="9eb3c1aa-a2e0-4e75-8802-54dc26300b42" variableName="errorCode" />
+			<set-variable value="UNSUPPORTED_MEDIA_TYPE" doc:name="Set Error Code" doc:id="9eb3c1aa-a2e0-4e75-8802-54dc26300b42" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="51a68d15-25a4-4bb3-8836-988c4eb5fe3d" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="0fc18a09-07eb-4633-836f-49710ee9eae3" name="global-prepare-error-response-sub-flow"/>
-		</on-error-continue>	
-		
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="0fc18a09-07eb-4633-836f-49710ee9eae3" name="global-prepare-error-response-sub-flow" />
+		</on-error-continue>
+
 		<!-- HTTP Requster Related error handling -->
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="373ce92c-a750-4586-9a99-5191313eee35" type="HTTP:BAD_REQUEST">
 			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="1b903176-0f9f-48c2-b55c-4f08a528d74e" variableName="httpStatus" />
@@ -49,153 +46,159 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="8842b4ff-bd5c-462b-ae01-13b2dfe702e9" variableName="errorMessage" />
 			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="e9802cdb-6f8f-46f2-833a-c2fd8b3af969" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:CLIENT_SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8b439ef7-30fd-47ad-96d7-cacf5df8a35c" >
+		<on-error-continue type="HTTP:CLIENT_SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8b439ef7-30fd-47ad-96d7-cacf5df8a35c">
 			<set-variable value="#[401]" doc:name="Set the HTTP Status - 401" doc:id="1f58a442-e5b3-41d3-85d2-f1636fa9345b" variableName="httpStatus" />
-      <set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="e08ad137-e993-402f-92d5-c06ce54a0253" variableName="errorCode" />
+			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="e08ad137-e993-402f-92d5-c06ce54a0253" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="ad805f41-8a51-49bd-a750-27d8e712e2b6" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="6d7f2813-c5ed-4532-be5d-cb7efbfae4cb" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="6d7f2813-c5ed-4532-be5d-cb7efbfae4cb" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:CONNECTIVITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2224ec8c-045f-4524-b424-e0ab2f5a0d9c" >
+		<on-error-continue type="HTTP:CONNECTIVITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2224ec8c-045f-4524-b424-e0ab2f5a0d9c">
 			<set-variable value="#[503]" doc:name="Set the HTTP Status - 503" doc:id="04bb6192-a37a-490d-9bf9-8a0b739df803" variableName="httpStatus" />
-      <set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="8095cfc9-e3b6-472e-85de-0380542ab5d5" variableName="errorCode" />
+			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="8095cfc9-e3b6-472e-85de-0380542ab5d5" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="f0c885a5-f20b-4339-a6df-ffd9d74b81f4" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="38bb38d6-950d-4e5a-84bc-a73285f959ef" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="38bb38d6-950d-4e5a-84bc-a73285f959ef" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:FORBIDDEN" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="28e610ed-3907-4ab2-837a-a5927db76c26" >
+		<on-error-continue type="HTTP:FORBIDDEN" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="28e610ed-3907-4ab2-837a-a5927db76c26">
 			<set-variable value="#[403]" doc:name="Set the HTTP Status - 403" doc:id="3f8542ac-6229-49a5-8368-cfbc0704a459" variableName="httpStatus" />
-      <set-variable doc:name="Set Error Code" doc:id="7c3c6d7e-226f-4d23-ae61-5f0908df6d04" variableName="errorCode" value="FORBIDDEN"/>
+			<set-variable doc:name="Set Error Code" doc:id="7c3c6d7e-226f-4d23-ae61-5f0908df6d04" variableName="errorCode" value="FORBIDDEN" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="77808976-4eb8-4b77-b281-e1d063e4cffb" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="55e79a60-b682-4413-b773-a8354d187301" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="55e79a60-b682-4413-b773-a8354d187301" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:INTERNAL_SERVER_ERROR" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a382e5e2-a740-4168-8e21-226fa0d31dab" >
+		<on-error-continue type="HTTP:INTERNAL_SERVER_ERROR" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a382e5e2-a740-4168-8e21-226fa0d31dab">
 			<set-variable value="#[500]" doc:name="Set the HTTP Status - 500" doc:id="3d3bde15-0bce-4233-a1ec-1f15556e3f9b" variableName="httpStatus" />
-      <set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="a6312a14-4b3c-466b-a430-656ce478b24d" variableName="errorCode" />
+			<set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="a6312a14-4b3c-466b-a430-656ce478b24d" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="0a8abc1b-8585-48b1-93d3-30e08a25b268" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="a712699c-f24d-464f-94fe-de70acce1410" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="a712699c-f24d-464f-94fe-de70acce1410" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:METHOD_NOT_ALLOWED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ea93055f-ac2b-431e-b38e-a6d096189c58" >
+		<on-error-continue type="HTTP:METHOD_NOT_ALLOWED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ea93055f-ac2b-431e-b38e-a6d096189c58">
 			<set-variable value="#[405]" doc:name="Set the HTTP Status - 405" doc:id="995e9ac6-bd2f-41f1-8ee6-19c107663afc" variableName="httpStatus" />
-      <set-variable value="METHOD_NOT_ALLOWED" doc:name="Set Error Code" doc:id="53fbbc5a-2a1c-4bb9-9b97-e8aebdb3c0a7" variableName="errorCode" />
+			<set-variable value="METHOD_NOT_ALLOWED" doc:name="Set Error Code" doc:id="53fbbc5a-2a1c-4bb9-9b97-e8aebdb3c0a7" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="23f514b1-ced6-4717-b5f4-d53ac2f4410b" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="bd66501a-6d8f-4849-8a20-5812b5072df8" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="bd66501a-6d8f-4849-8a20-5812b5072df8" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:NOT_ACCEPTABLE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a0fae002-df74-4d73-bc95-e148750137c1" >
+		<on-error-continue type="HTTP:NOT_ACCEPTABLE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a0fae002-df74-4d73-bc95-e148750137c1">
 			<set-variable value="#[406]" doc:name="Set the HTTP Status - 406" doc:id="85eff8c0-81fa-4a73-9e76-9dd0d7f87072" variableName="httpStatus" />
-      <set-variable value="NOT_ACCEPTABLE" doc:name="Set Error Code" doc:id="17dc8427-25ae-4e5b-aa13-efcda9dbf86f" variableName="errorCode" />
+			<set-variable value="NOT_ACCEPTABLE" doc:name="Set Error Code" doc:id="17dc8427-25ae-4e5b-aa13-efcda9dbf86f" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="aa1a0582-8cad-40ae-974c-0ba598cf480a" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="1623376d-7bb7-43de-9076-aee05812df86" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="1623376d-7bb7-43de-9076-aee05812df86" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:NOT_FOUND" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="48ddfd00-e0d7-488e-9443-5201b897e3e4" >
+		<on-error-continue type="HTTP:NOT_FOUND" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="48ddfd00-e0d7-488e-9443-5201b897e3e4">
 			<set-variable value="#[404]" doc:name="Set the HTTP Status - 404" doc:id="4878b3e0-2465-4af1-a21c-eb454f45bbb7" variableName="httpStatus" />
-      <set-variable value="NOT_FOUND" doc:name="Set Error Code" doc:id="f316fcbe-c6cc-4635-b112-e8dad4619ab9" variableName="errorCode" />
+			<set-variable value="NOT_FOUND" doc:name="Set Error Code" doc:id="f316fcbe-c6cc-4635-b112-e8dad4619ab9" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="6f30c664-38ea-4aac-a826-8789bae84358" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="aa10587b-48c4-4dbc-b77d-58802466c595" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="aa10587b-48c4-4dbc-b77d-58802466c595" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:PARSING" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="01aed2e2-a7be-49d5-b8b9-6064f5e168a4" >
+		<on-error-continue type="HTTP:PARSING" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="01aed2e2-a7be-49d5-b8b9-6064f5e168a4">
 			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="64e0294c-395c-4594-8d17-b1fe2576ce1e" variableName="httpStatus" />
-      <set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="e11153c7-a5ce-449e-b683-519b876db255" variableName="errorCode" />
+			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="e11153c7-a5ce-449e-b683-519b876db255" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="55f54c86-abfb-435e-a28b-5b7b88e6af19" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="b9c4ba70-4fbc-4dcb-b90a-2bc2b835071c" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="b9c4ba70-4fbc-4dcb-b90a-2bc2b835071c" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:RETRY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f292512a-c37e-480a-a677-b4fcf5bba3a7" >
+		<on-error-continue type="HTTP:RETRY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f292512a-c37e-480a-a677-b4fcf5bba3a7">
 			<set-variable value="#[503]" doc:name="Set the HTTP Status - 503" doc:id="c37ff256-8457-4093-b3cc-b46db95676ba" variableName="httpStatus" />
-      <set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="a10c2041-4b8c-4a60-b79b-bbe5efaee166" variableName="errorCode" />
+			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="a10c2041-4b8c-4a60-b79b-bbe5efaee166" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="cb16cbbb-c5d7-4e37-976c-0524e70d4831" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="8542305b-bd1b-4948-9782-1f4a88fb5a11" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="8542305b-bd1b-4948-9782-1f4a88fb5a11" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="769bb75e-2903-44d4-9ec7-782e79ae084a" >
+		<on-error-continue type="HTTP:SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="769bb75e-2903-44d4-9ec7-782e79ae084a">
 			<set-variable value="#[401]" doc:name="Set the HTTP Status - 401" doc:id="6f7918b5-f98e-447b-9031-e085de3e5772" variableName="httpStatus" />
-      			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="32db6e97-a28d-4a85-b7b8-8315c92abcf0" variableName="errorCode" />
+			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="32db6e97-a28d-4a85-b7b8-8315c92abcf0" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="567041b6-a50a-488c-a7de-f57ced4c6e6a" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="71772100-f6f6-4a0a-bc5c-234897e63e60" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="71772100-f6f6-4a0a-bc5c-234897e63e60" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:TIMEOUT" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ec13c23a-44bc-4559-b2d4-e5086cc26d6a" >
+		<on-error-continue type="HTTP:TIMEOUT" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ec13c23a-44bc-4559-b2d4-e5086cc26d6a">
 			<set-variable value="#[504]" doc:name="Set the HTTP Status - 504" doc:id="78ecfa28-dadd-4074-acfa-257d700868de" variableName="httpStatus" />
-      			<set-variable value="GATEWAY_TIMEOUT" doc:name="Set Error Code" doc:id="7a8067de-6179-40e8-a947-fe9e01e98b14" variableName="errorCode" />
+			<set-variable value="GATEWAY_TIMEOUT" doc:name="Set Error Code" doc:id="7a8067de-6179-40e8-a947-fe9e01e98b14" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="ea3ce80e-ad9f-4ffa-a7ad-8c5ba2fabd56" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="8def8476-4327-4662-9cd4-dcc69b91f1f0" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="8def8476-4327-4662-9cd4-dcc69b91f1f0" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:TOO_MANY_REQUESTS" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ebdcca0c-c6fc-4e6c-a196-afa77b5531d3" >
+		<on-error-continue type="HTTP:TOO_MANY_REQUESTS" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ebdcca0c-c6fc-4e6c-a196-afa77b5531d3">
 			<set-variable value="#[429]" doc:name="Set the HTTP Status - 429" doc:id="6c7f8fb2-03a8-4101-8155-4e629477465c" variableName="httpStatus" />
-      			<set-variable value="TOO_MANY_REQUESTS" doc:name="Set Error Code" doc:id="5b2c4269-e337-427e-8b65-49a10518a159" variableName="errorCode" />
+			<set-variable value="TOO_MANY_REQUESTS" doc:name="Set Error Code" doc:id="5b2c4269-e337-427e-8b65-49a10518a159" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="3a61e2b2-28e7-4e7a-86a5-bbe8ba8d7a36" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="d7a03de3-4a61-46c5-adae-b64be12b7980" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="d7a03de3-4a61-46c5-adae-b64be12b7980" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:UNAUTHORIZED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f6b019a4-7524-4066-aee6-419281a8565c" >
+		<on-error-continue type="HTTP:UNAUTHORIZED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f6b019a4-7524-4066-aee6-419281a8565c">
 			<set-variable value="#[401]" doc:name="Set the HTTP Status - 401" doc:id="c05c59b9-e4e5-4e9b-91c7-ac6b4c29ff47" variableName="httpStatus" />
-      			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="983ebc88-5a81-49f4-944f-a63827ed6d2c" variableName="errorCode" />
+			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="983ebc88-5a81-49f4-944f-a63827ed6d2c" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="8163871f-329b-47df-8d3a-9abcfb4d0e72" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="47827100-6c57-4391-9375-40066ff9593c" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="47827100-6c57-4391-9375-40066ff9593c" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="HTTP:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="76aa896d-a134-457e-af8f-504a23b63edf" >
+		<on-error-continue type="HTTP:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="76aa896d-a134-457e-af8f-504a23b63edf">
 			<set-variable value="#[415]" doc:name="Set the HTTP Status - 415" doc:id="91b14514-14af-466e-888a-518c2a4c9fa8" variableName="httpStatus" />
-      			<set-variable value="UNSUPPORTED_MEDIA_TYPE" doc:name="Set Error Code" doc:id="f2260d04-aa2e-4195-92ff-448eef8517a7" variableName="errorCode" />
+			<set-variable value="UNSUPPORTED_MEDIA_TYPE" doc:name="Set Error Code" doc:id="f2260d04-aa2e-4195-92ff-448eef8517a7" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="b43cfe5c-6e9e-45dd-9a40-584255e2687f" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ffb950d0-33d2-41da-8458-b442bb6cb4b8" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ffb950d0-33d2-41da-8458-b442bb6cb4b8" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		
+
 		<!-- Streaming related exception -->
-		<on-error-continue type="STREAM_MAXIMUM_SIZE_EXCEEDED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="0a5a2995-5e10-4fab-ab0f-543f86026aa2" >
+		<on-error-continue type="STREAM_MAXIMUM_SIZE_EXCEEDED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="0a5a2995-5e10-4fab-ab0f-543f86026aa2">
 			<set-variable value="#[500]" doc:name="Set the HTTP Status - 500" doc:id="2aef70fe-7126-4409-9fd5-36101c9f7d52" variableName="httpStatus" />
-      			<set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="4bfa2f75-78d6-409c-95cd-349033a09e4a" variableName="errorCode" />
+			<set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="4bfa2f75-78d6-409c-95cd-349033a09e4a" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="8ede166f-0e8c-42c7-9974-abdd951812c8" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="9bf55189-6a4a-42f1-a2e0-68e7b1f62bff" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="9bf55189-6a4a-42f1-a2e0-68e7b1f62bff" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		
+
 		<!-- Generic CONNECTIVITY Related Exception handling start. Order matters -->
-		<on-error-continue type="RETRY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="148a8086-ff88-4105-bfa7-be81c2b3b45c" >
+		<on-error-continue type="RETRY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="148a8086-ff88-4105-bfa7-be81c2b3b45c">
 			<set-variable value="#[503]" doc:name="Set the HTTP Status - 503" doc:id="296ca6e5-fce2-4f45-8e0a-c46f0e685496" variableName="httpStatus" />
-      			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="c8e182c6-6034-4bec-94d0-ca9e791a2a05" variableName="errorCode" />
+			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="c8e182c6-6034-4bec-94d0-ca9e791a2a05" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="5604e043-a093-4f16-bd0e-ffee0a19e0c6" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="4f4a4d62-b7c5-4192-95c8-38c15058de46" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="4f4a4d62-b7c5-4192-95c8-38c15058de46" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="REDELIVERY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="452c7f62-a179-42b6-9347-7e1c0a83f9f3" >
+		<on-error-continue type="REDELIVERY_EXHAUSTED" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="452c7f62-a179-42b6-9347-7e1c0a83f9f3">
 			<set-variable value="#[503]" doc:name="Set the HTTP Status - 503" doc:id="c7feedda-ee5e-498d-a19a-fc25d749e819" variableName="httpStatus" />
-      			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="33509214-e65c-4c69-a621-47ce7a9c04b5" variableName="errorCode" />
+			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="33509214-e65c-4c69-a621-47ce7a9c04b5" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="baeb73fb-b711-4e2c-94dc-b12f224b5744" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="384e5b6c-6715-4123-95c6-00548afacfc3" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="384e5b6c-6715-4123-95c6-00548afacfc3" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="CONNECTIVITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="321943df-3b51-4293-a44c-7c9344ab878b" >
+		<on-error-continue type="CONNECTIVITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="321943df-3b51-4293-a44c-7c9344ab878b">
 			<set-variable value="#[503]" doc:name="Set the HTTP Status - 503" doc:id="b48c8cee-f042-484c-9417-dcd89da6d720" variableName="httpStatus" />
-      			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="d6ef20ed-89b2-4a8e-af77-df952d505d4d" variableName="errorCode" />
+			<set-variable value="SERVICE_UNAVAILABLE" doc:name="Set Error Code" doc:id="d6ef20ed-89b2-4a8e-af77-df952d505d4d" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="ed14341f-0bfe-4ce2-9618-6c09ddcc2695" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="7e85e1e1-9d77-41c1-a406-e1df387c74aa" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="7e85e1e1-9d77-41c1-a406-e1df387c74aa" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="TIMEOUT" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2ca6830c-2303-49e4-8667-8b3e1fd8360f" >
+		<on-error-continue type="TIMEOUT" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2ca6830c-2303-49e4-8667-8b3e1fd8360f">
 			<set-variable value="#[504]" doc:name="Set the HTTP Status - 504" doc:id="4648582b-d391-40a4-8a67-8e951b6af673" variableName="httpStatus" />
-      			<set-variable value="GATEWAY_TIMEOUT" doc:name="Set Error Code" doc:id="8eba6796-e840-40ef-81a0-0ed9833edc89" variableName="errorCode" />
+			<set-variable value="GATEWAY_TIMEOUT" doc:name="Set Error Code" doc:id="8eba6796-e840-40ef-81a0-0ed9833edc89" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="562ce520-fb38-465b-952f-59209afbd2e0" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="0defaede-f68b-4f06-a098-151e862af266" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="0defaede-f68b-4f06-a098-151e862af266" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
 		<!-- Generic CONNECTIVITY Exception handling end -->
-		
-		<on-error-continue type="TRANSFORMATION" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="48c30f1f-0df7-4684-bf45-49eec7bf2103" >
+
+		<on-error-continue type="TRANSFORMATION" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="48c30f1f-0df7-4684-bf45-49eec7bf2103">
 			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="f0114ef3-39f7-424f-a9f0-9af87b84b492" variableName="httpStatus" />
-      			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="e1455835-96ca-4192-8ac1-ce3711ea3ca9" variableName="errorCode" />
+			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="e1455835-96ca-4192-8ac1-ce3711ea3ca9" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="189a5909-1e54-4bdb-866d-de366628e346" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ff34f3d0-453a-424e-b3a0-725476b2a3b9" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ff34f3d0-453a-424e-b3a0-725476b2a3b9" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		
-		<on-error-continue type="EXPRESSION" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="521abc78-2593-4f12-80fd-d461925fb0d8" >
+
+		<on-error-continue type="EXPRESSION" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="521abc78-2593-4f12-80fd-d461925fb0d8">
 			<set-variable value="#[500]" doc:name="Set the HTTP Status - 500" doc:id="ad4e8751-f1c9-42b9-9242-671767a7c109" variableName="httpStatus" />
 			<set-variable value="INTERNAL_SERVER_ERROR" doc:name="Set Error Code" doc:id="32276f82-a72e-47ed-a17f-4c7aa0aa4a54" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="4fe86c62-6f06-45b4-af22-a89b0831c63f" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="cea4f6b8-d721-40aa-8098-deb781c6010a" name="global-prepare-error-response-sub-flow"/>
-		</on-error-continue>	
-		<on-error-continue type="ROUTING" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1c1e093c-9881-405e-9e81-195ae3618a30" >
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="cea4f6b8-d721-40aa-8098-deb781c6010a" name="global-prepare-error-response-sub-flow" />
+		</on-error-continue>
+		<on-error-continue type="ROUTING" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1c1e093c-9881-405e-9e81-195ae3618a30">
 			<set-variable value="#[400]" doc:name="Set the HTTP Status - 400" doc:id="19e53f6f-2715-48fb-ab69-7b632cb4cb4a" variableName="httpStatus" />
-      			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="3ec0fcf4-cc9d-49c5-968c-038a84767f8f" variableName="errorCode" />
+			<set-variable value="BAD_REQUEST" doc:name="Set Error Code" doc:id="3ec0fcf4-cc9d-49c5-968c-038a84767f8f" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="bb71dad8-1cdc-4a76-8c9f-ff1af774592f" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="88d68053-1b45-4731-a8a9-1d728f58f259" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="88d68053-1b45-4731-a8a9-1d728f58f259" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		<on-error-continue type="SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b679ceae-d7a6-4d0b-91c0-b109649f7a55" >
+		<on-error-continue type="SECURITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b679ceae-d7a6-4d0b-91c0-b109649f7a55">
 			<set-variable value="#[401]" doc:name="Set the HTTP Status - 401" doc:id="08c30fbb-f91b-4c1e-9dff-b3ccd7314cff" variableName="httpStatus" />
-      			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="ca8e891b-5f1f-4d0d-b004-514d20e9f9fe" variableName="errorCode" />
+			<set-variable value="UNAUTHORIZED" doc:name="Set Error Code" doc:id="ca8e891b-5f1f-4d0d-b004-514d20e9f9fe" variableName="errorCode" />
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="6bba0a36-bd6f-44a0-b3ce-478494ef1715" variableName="errorMessage" />
-			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="7093e667-8f28-4c56-8178-291cebd7e829" name="global-prepare-error-response-sub-flow"/>
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="7093e667-8f28-4c56-8178-291cebd7e829" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		
-		
+		<on-error-continue type="HTTP:UNPROCESSABLE_ENTITY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ca8e891b-5f1f-4d0d-b004-514d2s0e2f9fe">
+			<set-variable value="#[422]" doc:name="Set the HTTP Status - 422" doc:id="ca8e891b-5f1f-4d3d-b004-514d20e9f9se" variableName="httpStatus" />
+			<set-variable value="UNPROCESSABLE_ENTITY" doc:name="Set Error Code" doc:id="ca8eh94b-3f1f-4d0d-b004-514d20e9f9fe" variableName="errorCode" />
+			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="ca8e891b-5f1f-4d0d-b004-512d20esf9he" variableName="errorMessage" />
+			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="ca8e891b-5f1f-4d0d-r004-514d20e9f13fe" name="global-prepare-error-response-sub-flow" />
+		</on-error-continue>
+
+
 		<!-- If none of the above matches then handle a the exception using generic handler -->
 		<on-error-continue type="ANY" enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fcb6c8d7-4930-46cd-b602-b6df18d8492c">
 			<set-variable value="#[500]" doc:name="Set HTTP Status - 500" variableName="httpStatus" />
@@ -203,15 +206,16 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<set-variable value='#[if (error.muleMessage.payload != null) error.muleMessage.payload else error.description default ""]' doc:name="Set Error Message" doc:id="01ed3a2d-10e1-4a99-b3e5-6fe22a535429" variableName="errorMessage" />
 			<flow-ref doc:name="global-prepare-error-response-sub-flow" doc:id="b9f482bb-74e1-4daf-a6aa-16a54333eace" name="global-prepare-error-response-sub-flow" />
 		</on-error-continue>
-		
-	
-</error-handler>
-    
-    <sub-flow name="global-prepare-error-response-sub-flow" doc:id="e97b44a5-a008-48eb-894c-ac42a43ae524">
+
+
+	</error-handler>
+
+	<sub-flow name="global-prepare-error-response-sub-flow" doc:id="e97b44a5-a008-48eb-894c-ac42a43ae524">
 		<logger level="ERROR" doc:name="Logger" doc:id="2db3d38a-f105-4b09-bd14-fd8638b9dd6d" message="Status Code [#[vars.httpStatus]] - Error Code [#[vars.errorCode]] - Error Message [#[if(vars.errorMessage != null) vars.errorMessage else '']] - Error Description [#[if(vars.errorDescription != null) vars.errorDescription else '']]" />
 		<ee:transform doc:name="Compose Error Payload" doc:id="c3263058-3e42-44be-8d2a-8d24255620e2">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+				<ee:set-payload>
+					<![CDATA[%dw 2.0
 output application/json
 ---
 error: {
@@ -219,10 +223,11 @@ error: {
 	error_datetime: now() as String { format: "yyyy-MM-dd'T'HH:mm:ssZ" },
 	(error_message: vars.errorMessage) if(vars.errorMessage != null),
 	(error_description: vars.errorDescription) if(vars.errorDescription != null)
-}]]></ee:set-payload>
+}]]>
+				</ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<set-variable value="#[(vars.outboundHeaders default {}) ++ {'x-correlation-id': correlationId}]" doc:name="Add correlationId to outboundHeaders" doc:id="4076d9a7-c58e-46d9-9d96-c6ad15a568a6" variableName="outboundHeaders" mimeType="application/java" />
-    </sub-flow>
-	
-	</mule>
+	</sub-flow>
+
+</mule>

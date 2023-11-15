@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
-	<flow name="post-usersFlow" doc:id="638e5fa9-252d-4a8d-ae6e-44f82507ccc8" >
-		<flow-ref doc:name="Flow Reference" doc:id="64174c32-cf4b-4326-9ded-787d96b4f98e" name="check-users-collection-Sub_Flow" target="vars.collection"/>
-		<mongo:list-collections doc:name="List collections" doc:id="cc6ff0c6-9e25-4075-bbf0-c92242a6993f" config-ref="MongoDB_Config_Secured"/>
-		<ee:transform doc:name="Transform Message" doc:id="ba893c08-6237-434d-be65-31de8c4e5cee" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+	<flow name="post-usersFlow" doc:id="638e5fa9-252d-4a8d-ae6e-44f82507ccc8">
+		<flow-ref doc:name="check-users-collection" doc:id="64174c32-cf4b-4326-9ded-787d96b4f98e" name="check-users-collection-Sub_Flow" target="vars.collection" />
+		<ee:transform doc:name="email_search_query variable -&gt; Prepare the search query" doc:id="53817ccd-c551-4c5c-8a1e-6991ba84e148">
+			<ee:message></ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="email_search_query">
+					<![CDATA[%dw 2.0
 output application/json
 ---
-payload]]></ee:set-payload>
+{
+	'email': lower(payload.email as String)
+}]]>
+				</ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<mongo:find-documents doc:name="check if the email is used" doc:id="c6bcaf9e-f527-4488-8452-99324594d5c1" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" fields="email" target="email_search_resonse" targetValue="#[output application/json&#10;---&#10;payload]">
+			<mongo:query>
+				<![CDATA[#[vars.email_search_query]]]>
+			</mongo:query>
+		</mongo:find-documents>
+		<choice doc:name="Choice" doc:id="c52d9590-c16d-44e4-aef6-90c2f7b7ba6d">
+			<when expression="#[sizeOf(vars.email_search_resonse) &gt; 0]">
+				<raise-error doc:name="Raise error" doc:id="aadefba5-6885-471d-8d37-cab532449dd0" type="HTTP:UNPROCESSABLE_ENTITY" description="Email is already used." />
+			</when>
+			<otherwise>
+				<ee:transform doc:name="prepare the body of the user with the default fields" doc:id="84024c52-2eec-4638-9b56-5a5158058eee">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+import dw::Crypto
+output application/json
+---
+payload mapObject (value, key) -> {
+    (key): if (key == "password") Crypto::hashWith(value, 'SHA-256') else value
+} ++
+{
+  "status": "pending",
+  "role": "user",
+  "created_at": now(),
+  "last-activity": "",
+  "last-update": "",
+  "activated_at": now()
+}]]>
+						</ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<mongo:insert-document doc:name="Insert document" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="ba893c08-6237-434d-be65-31de8c4e5cee">
+			<ee:message>
+				<ee:set-payload>
+					<![CDATA[%dw 2.0
+output application/json
+---
+payload]]>
+				</ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
