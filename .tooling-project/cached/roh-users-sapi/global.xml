@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7426c200-4344-4c8c-9a46-4c4c6e24c9da" >
+		<http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="689033b5-1526-4c8d-b56a-bd1ee252a8e8" file="properties/${mule.env}.yaml" />
+	<configuration doc:name="Configuration" doc:id="3d612aea-60b0-4ee2-b204-9225b06bff97" defaultErrorHandler-ref="globalError_Handler" />
+	<global-property doc:name="Global Property" doc:id="b9e2b509-fada-448e-8483-084562cdea9f" name="mule.secure.key" value="45254532632133465"/>
+ 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="3b800d4b-7005-4522-ad43-34d0c4c8b221" flowRef="roh-users-interaction-sapi-main"/>
+	<global-property doc:name="Global Property" doc:id="4fc28f88-5a77-4f97-8bea-e2ad874e2e67" name="mule.env" value="loc" />
+	<mongo:config name="MongoDB_Config_String" doc:name="MongoDB Config" doc:id="f86e0efd-18e6-4dd2-afd7-0b3e557de541" >
+		<mongo:connection-string-connection connectionString="mongodb+srv://new_user_test:gEodjUPFY4KUT8dy@mulesoftconnect.ujqssri.mongodb.net/mulesoftConnect?retryWrites=true&amp;w=majority" />
+	</mongo:config>
+		<mongo:config name="MongoDB_Config_Secured" doc:name="MongoDB secured config" doc:id="2543568b-4a4a-41a7-b2cc-2b1b0423cdac" >
+		<mongo:connection-string-connection connectionString="mongodb+srv://${mongoDb.userName}:${mongoDb.password}@${mongoDb.dataBase}.ujqssri.mongodb.net/mulesoftConnect?retryWrites=true&amp;w=majority" />
+	</mongo:config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="a09acec8-0ab2-47d5-a3b4-7102dbde4d41" file="properties/${mule.env}.secure.yaml" key="${mule.secure.key}" />
+</mule>

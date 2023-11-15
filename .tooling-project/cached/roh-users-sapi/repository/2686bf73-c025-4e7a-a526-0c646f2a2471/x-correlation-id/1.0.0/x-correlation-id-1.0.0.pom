@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>2686bf73-c025-4e7a-a526-0c646f2a2471</groupId>
+  <artifactId>x-correlation-id</artifactId>
+  <version>1.0.0</version>
+  <name>x-correlation-id</name>
+  <properties>
+    <classifier>raml-fragment</classifier>
+    <main>x-correlation-id.raml</main>
+    <status>published</status>
+    <originalFormatVersion>1.0</originalFormatVersion>
+    <apiVersion>v1</apiVersion>
+    <projectId>2bc4ccbe-567e-41eb-93c9-2ae4f4e74f0a</projectId>
+    <branchId>master</branchId>
+    <commitId>627f436b9f43123ae69f1d8dca68adf478b76fe4</commitId>
+    <keywords/>
+    <type>raml-fragment</type>
+    <mainFile>x-correlation-id.raml</mainFile>
+  </properties>
+  <repositories>
+    <repository>
+      <id>anypoint-exchange</id>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+    </repository>
+  </repositories>
+</project>

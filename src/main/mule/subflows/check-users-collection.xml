@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<sub-flow name="check-users-collection-Sub_Flow" doc:id="ae0729b3-487b-4544-95ba-685cc254aeb9" >
+		<logger level="INFO" doc:name="Start check users collection subflow" doc:id="18dba70d-5fa3-4404-9b5d-664b85fc63c2" message="check users collection started"/>
+		<mongo:collection-exists collectionName="users" doc:name="Collection exists" doc:id="718350e2-3c68-4acb-85bb-56838984f45f" config-ref="MongoDB_Config_Secured"/>
+		<logger level="INFO" doc:name="End check users collection subflow" doc:id="952dda82-af39-4df8-8cb9-166bae9d4c94" message="#[payload]"/>
+	</sub-flow>
+</mule>

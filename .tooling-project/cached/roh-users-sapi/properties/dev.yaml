@@ -1,0 +1,13 @@
+api:
+  id: ""
+  listener:
+    path: "/*"
+  appName: ${artifactId}
+  appVersion: ${version}
+
+http:
+  listener:
+    host: "0.0.0.0"
+    port: "8091" 
+    
+  requests:  

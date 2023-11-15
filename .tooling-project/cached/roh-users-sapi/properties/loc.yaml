@@ -1,0 +1,17 @@
+api:
+  id: "1098023"
+  listener:
+    path: "/*"
+  appName: ${artifactId}
+  appVersion: ${version}
+
+http:
+  listener:
+    host: "localhost"
+    port: "8081" 
+    
+
+mongoDb:
+  dataBase: ${secure::mongoDb.dataBase}
+  userName: ${secure::mongoDb.userName}
+  password: ${secure::mongoDb.password}

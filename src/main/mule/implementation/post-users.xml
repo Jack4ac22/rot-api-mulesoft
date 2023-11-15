@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<flow name="post-usersFlow" doc:id="638e5fa9-252d-4a8d-ae6e-44f82507ccc8" >
+		<flow-ref doc:name="Flow Reference" doc:id="64174c32-cf4b-4326-9ded-787d96b4f98e" name="check-users-collection-Sub_Flow" target="vars.collection"/>
+		<mongo:list-collections doc:name="List collections" doc:id="cc6ff0c6-9e25-4075-bbf0-c92242a6993f" config-ref="MongoDB_Config_Secured"/>
+		<ee:transform doc:name="Transform Message" doc:id="ba893c08-6237-434d-be65-31de8c4e5cee" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
