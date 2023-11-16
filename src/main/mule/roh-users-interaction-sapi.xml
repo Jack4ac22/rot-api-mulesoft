@@ -25,12 +25,12 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
 		<logger level="INFO" message="get:\v1\users:roh-users-interaction-sapi-config" />
     </flow>
     <flow name="post:\v1\users:application\json:roh-users-interaction-sapi-config">
-        <logger level="INFO" message="post:\v1\users:application\json:roh-users-interaction-sapi-config" />
-        <flow-ref doc:name="Flow Reference" doc:id="634fb233-93a7-4627-aca2-caf15f574cab" name="post-usersFlow" />
+        <logger level="INFO" message="start post  users" />
+        <flow-ref doc:name="Flow Reference" doc:id="634fb233-93a7-4627-aca2-caf15f574cab" name="post-usersSub_Flow" />
     </flow>
     <flow name="post:\v1\users\login:roh-users-interaction-sapi-config">
-        <logger level="INFO" message="#[payload]" />
-        <flow-ref doc:name="Flow Reference" doc:id="b1918a5e-f98f-44fc-8c84-69141d7b7b9a" name="post-usersFlow" />
+        <logger level="INFO" message="#[payload]" doc:name="start post  users"/>
+        <flow-ref doc:name="Flow Reference" doc:id="b1918a5e-f98f-44fc-8c84-69141d7b7b9a" name="post-usersSub_Flow" />
     </flow>
     <flow name="put:\v1\users\(id)\role:application\json:roh-users-interaction-sapi-config">
         <ee:transform doc:name="Transform Message">

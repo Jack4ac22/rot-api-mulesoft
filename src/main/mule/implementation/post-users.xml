@@ -6,7 +6,7 @@ http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mo
 http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
 http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
-	<flow name="post-usersFlow" doc:id="638e5fa9-252d-4a8d-ae6e-44f82507ccc8">
+	<sub-flow name="post-usersSub_Flow" doc:id="cfd35cee-029e-46d7-8cc5-d0bc85efd33e" >
 		<flow-ref doc:name="check-users-collection" doc:id="64174c32-cf4b-4326-9ded-787d96b4f98e" name="check-users-collection-Sub_Flow" target="vars.collection" />
 		<ee:transform doc:name="email_search_query variable -&gt; Prepare the search query" doc:id="53817ccd-c551-4c5c-8a1e-6991ba84e148">
 			<ee:message></ee:message>
@@ -50,47 +50,14 @@ payload  -- {password: payload.password} ++ {password: hashedPassword}
 						</ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<mongo:insert-document doc:name="Insert the user and prepare the returned value" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" targetValue='#[output application/json skipNullOn="everywhere"&#10;---&#10;payload -- {password: payload.password}]'/>
-<!-- [STUDIO:"Transform Message"]				<ee:transform doc:name="Transform Message" doc:id="d18d22bc-5413-4879-b8a9-52c7f6769ce2">
+				<mongo:insert-document doc:name="Insert the user and prepare the returned value" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" targetValue='#[output application/json skipNullOn="everywhere"&#10;---&#10;payload -- {password: payload.password}]' />
+				<ee:transform doc:name="Transform Message" doc:id="d18d22bc-5413-4879-b8a9-52c7f6769ce2">
 					<ee:message>
-						<ee:set-payload><![CDATA[
-%dw 2.0
-//Imports
-import * from dw::Crypto
-import * from dw::core::Binaries
-import * from dw::core::URL
- 
-//Variables
-var secret = "1A3B4A5CE86E0BF3AF6FF575C93438BH" //256 bit key
- 
-var tokenHeader = {
- "alg": "HS256", // The algorithm to sign
- "typ": "JWT", // Type of token
- "kid": "101" // Key Id
-}
- 
-var tokenPayload = {
- "iss": "GTA", // Issuer of JWT
- "iat": 1656422976, // now() as Number {unit: "seconds"}, // Time in seconds since epoch, hardcoded to match with JAVA code block
- "requestedScope": ["xotp"] // Request scope
-}
- 
-// Function to encode data into base64
-// Note:Web Tokens use Base64Url instead of the typical Base64. They are basically the same except Base64Url are safe to pass in a URL because they use – instead of + and _ instead of / and they omit the = padding characters at the end of the string. You can do string replacement to properly convert the token then call fromBase64.
-// To read more on encoding/decoding base64 formats visit - https://docs.mulesoft.com/dataweave/2.4/dw-binaries-functions-tobase64
-fun base64encodeURL(data) =
- toBase64(data) replace "/" with ("_") replace "+" with ("-") replace "=" with ""
- 
-//Variables
-var header = base64encodeURL(write(tokenHeader, "application/json")) // Convert to Stringified JSON
-var payload_token = base64encodeURL(write(payload, "application/json")) // Convert to Stringified JSON
-var signature = base64encodeURL(HMACBinary(secret as Binary, (base64encodeURL(header) ++ "." ++ base64encodeURL(payload_token)) as Binary, "HmacSHA256"))
-output application/json 
-&#45;&#45;-
-header ++ "." ++ payload_token ++ "." ++ signature
-]]></ee:set-payload>
+						<ee:set-payload><![CDATA[output application/json
+---
+payload -- {password: payload.password}]]></ee:set-payload>
 					</ee:message>
-				</ee:transform> [STUDIO] -->
+				</ee:transform>
 				<email:send doc:name="Send" doc:id="fbc3ad0e-a22b-4933-b345-d8c4010d774a" config-ref="Hotmail_Email_SMTP" fromAddress="ReasonOfHope@hotmail.com">
 			<reconnect />
 			<email:to-addresses>
@@ -105,5 +72,5 @@ header ++ "." ++ payload_token ++ "." ++ signature
 		</email:send>
 			</otherwise>
 		</choice>
-	</flow>
+	</sub-flow>
 </mule>
