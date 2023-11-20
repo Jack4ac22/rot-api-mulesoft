@@ -11,53 +11,40 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 				<fixed-frequency frequency="1" timeUnit="MINUTES"/>
 			</scheduling-strategy>
 		</scheduler> [STUDIO] -->
-		<set-payload value='#[output application/json&#10;---&#10;"ewogICJpZCI6ICJ0ZXNkdF9pZCIsCiAgImVtYWlsIjogInRlc3RfZW1haWwiLAogICJzZWNyZXQiOiAidGVzdF9zZWNyZXQiLAogICJhY3Rpb24iOiAidGVzdF9hY3Rpb24iCn0="]' doc:name="Set Payload" doc:id="358f301e-1579-4cc8-8b95-232e9c641ccc" />
-		<flow-ref doc:name="Flow Reference" doc:id="40871fe4-1d01-4f24-a709-1fc2158d4877" name="decode-tokenSub_Flow"/>
+		<set-payload value='#[output application/json&#10;---&#10;"ewogICJpZCI6ICJ0ZXNkdF9pZCIsCiAgImVtYWlsIjogInRlc3RfZW1haWwiLAogICJzZWNyZXQiOiAidGVzdF9zZWNyZXQiLAogICJhY3Rpb24iOiAibG9naW4iCn0="]' doc:name="Set Payload" doc:id="358f301e-1579-4cc8-8b95-232e9c641ccc" />
+		<flow-ref doc:name="Flow Reference" doc:id="40871fe4-1d01-4f24-a709-1fc2158d4877" name="decode-token-Sub-Flow"/>
 	</flow>
-	<sub-flow name="decode-tokenSub_Flow" doc:id="1e641dcf-8612-4532-9721-d2b33a8f8d7f" >
+	<sub-flow name="decode-token-Sub-Flow" doc:id="1e641dcf-8612-4532-9721-d2b33a8f8d7f">
 		<logger level="INFO" doc:name="start decoding token" doc:id="2347f566-53a0-438f-bf20-01f70cdf4f88" message="start decoding token" />
-		<try doc:name="Try to decode the token" doc:id="9303f8b1-0930-4d29-b9d7-5d5fa0a4e892" >
-			<logger level="INFO" doc:name="decoding the data" doc:id="654fe6fb-1333-4b31-be39-7a058fc56473" message="Decoding the payload for user: #[vars.decoded_payload.id]"/>
+		<try doc:name="Try to decode the token" doc:id="9303f8b1-0930-4d29-b9d7-5d5fa0a4e892">
+			<logger level="INFO" doc:name="decoding the data" doc:id="654fe6fb-1333-4b31-be39-7a058fc56473" message="Decoding the payload for user: #[vars.decoded_payload.id]" />
 			<ee:transform doc:name="decode data" doc:id="aea5efe5-8ece-4244-aa41-305b7a316fd6">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
-				<ee:set-variable variableName="decoded_payload"><![CDATA[%dw 2.0
+					<ee:set-variable variableName="decoded_payload"><![CDATA[%dw 2.0
 import * from dw::core::Binaries
 output application/json  
 ---
 read((fromBase64(payload as String)),"application/json") default "unauthorized"]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-			<error-handler >
-				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="37d5fa3e-df54-4059-b658-d96fe19b4ce4" >
+			<set-variable value="#[vars.decoded_payload.action]" doc:name="Set Payload Action Variable" doc:id="90e5eb57-b233-466a-ba37-d20223d07a35" variableName="token_action" />
+			<error-handler>
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="37d5fa3e-df54-4059-b658-d96fe19b4ce4">
 					<raise-error doc:name=" unauthorized token error" doc:id="68852a46-e6d1-44c9-aef4-93ca18669413" type="personal:CLIENT_SECURITY" description="un authorized token, please do not do any changes on your recieved URL." />
 				</on-error-propagate>
 			</error-handler>
 		</try>
-		<os:contains doc:name="the user has loged in" doc:id="a2fcfa4b-907c-49cc-9a86-1e2c25466d41" objectStore="token_object_store" key="#[vars.decoded_payload.id]" target="user_appears_in_key_store"/>
-		<logger level="INFO" doc:name="check the user's token" doc:id="99defd2e-35bd-45b4-87cd-ea57a8bd41c7" message="user #[vars.decoded_payload.id] status in the object store is: #[vars.user_appears_in_key_store]"/>
-		<choice doc:name="Choice" doc:id="44fde733-d75c-43b0-8c42-b6bbc5b501d5" >
-			<when expression="#[vars.user_appears_in_key_store]">
-				<os:retrieve doc:name="Retrieve" doc:id="056a7c89-4007-4730-bd29-9ab522531550" key="#[vars.decoded_payload.id]" objectStore="token_object_store" target="stored_token">
-					<os:default-value ><![CDATA[null]]></os:default-value>
-				</os:retrieve>
-				<logger level="INFO" doc:name="retrive user's stored token" doc:id="ec8295f8-1d9a-4e87-8d45-91691e1e435c" message="user #[vars.decoded_payload.id] stored token is: #[vars.stored_token]" />
-				<choice doc:name="Choice" doc:id="939edbbc-6923-4a79-9404-9cda7667f650" >
-					<when expression="#[payload == vars.stored_token]">
-						<os:store doc:name="Store generated token" doc:id="ab2f2b9a-0bd4-4c96-8de4-791aeb39a0f9" key="#[vars.decoded_payload.id]" objectStore="token_object_store">
-		</os:store>
-						<logger level="INFO" doc:name="Logger" doc:id="023fbf25-54cc-44f6-b6d5-a95a1aee06cf" message="the token is refreshed in the object store for the user: #[vars.decoded_payload.id]"/>
-					</when>
-					<otherwise>
-						<raise-error doc:name=" unauthorized token error" doc:id="4269ca47-4f89-47fb-9ac9-1d8a0c7d323e" type="Personal:SECURITY" description="un authorized token, please do not do any changes on your recieved URL." />
-					</otherwise>
-				</choice>
+		<choice doc:name="Choice" doc:id="fab572a8-e4a0-4033-8e80-c2fbd2a30c84" >
+			<when expression='#[vars.decoded_payload.action == "login"]'>
+				<flow-ref doc:name="Flow Reference to short term token" doc:id="4766f8f5-0403-4479-8a88-e2981f4cfafd" name="short-term-token-sub-flow" />
 			</when>
 			<otherwise >
-				<raise-error doc:name=" unauthorized user" doc:id="9d47436b-04ec-4d36-8417-58795150b4de" type="personal:CLIENT_SECURITY" description="LogIn required" />
+				<flow-ref doc:name="Flow Reference to long term token" doc:id="e045f211-9608-4d73-9a6f-d85f6d938238" name="long-term-token-Sub-Flow" />
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="end decoding token" doc:id="858e5028-1041-4e65-850c-75d16e567f81" message="end decoded data for user " />
 	</sub-flow>
+	
 </mule>

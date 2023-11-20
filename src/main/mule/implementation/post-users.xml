@@ -27,10 +27,7 @@ output application/json
 			</mongo:query>
 		</mongo:find-documents>
 		<choice doc:name="choice based on the email usage in the database" doc:id="c52d9590-c16d-44e4-aef6-90c2f7b7ba6d">
-			<when expression="#[sizeOf(vars.email_search_resonse) &gt; 0]">
-				<raise-error doc:name="Raise error" doc:id="aadefba5-6885-471d-8d37-cab532449dd0" type="PERSONAL:UNPROCESSABLE_ENTITY" description="Email is already used." />
-			</when>
-			<otherwise>
+			<when expression="#[sizeOf(vars.email_search_resonse) == 0]">
 				<ee:transform doc:name="prepare the body of the user with the default fields" doc:id="84024c52-2eec-4638-9b56-5a5158058eee">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
@@ -51,26 +48,56 @@ payload  -- {password: payload.password} ++ {password: hashedPassword}
 					</ee:message>
 				</ee:transform>
 				<mongo:insert-document doc:name="Insert the user and prepare the returned value" doc:id="e698c56d-b2f7-4d9d-ace9-787819244612" config-ref="MongoDB_Config_Secured" collectionName="${mongoDb.collections.users}" targetValue='#[output application/json skipNullOn="everywhere"&#10;---&#10;payload -- {password: payload.password}]' />
-				<ee:transform doc:name="Transform Message" doc:id="d18d22bc-5413-4879-b8a9-52c7f6769ce2">
+				<flow-ref doc:name="Flow Reference" doc:id="742a50e0-2a9f-41c2-96ed-345ad78d34c8" name="generate-token-send-email-Sub-Flow" target="email_sent"/>
+				<ee:transform doc:name="remove password from returned payload" doc:id="d18d22bc-5413-4879-b8a9-52c7f6769ce2">
 					<ee:message>
 						<ee:set-payload><![CDATA[output application/json
 ---
 payload -- {password: payload.password}]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<email:send doc:name="Send" doc:id="fbc3ad0e-a22b-4933-b345-d8c4010d774a" config-ref="Hotmail_Email_SMTP" fromAddress="ReasonOfHope@hotmail.com">
+			</when>
+			<otherwise>
+				<raise-error doc:name="Raise error" doc:id="aadefba5-6885-471d-8d37-cab532449dd0" type="PERSONAL:UNPROCESSABLE_ENTITY" description="Email is already used." />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="generate-token-send-email-Sub-Flow" doc:id="9d7ff7fe-f177-45c8-a794-0a48376476ef" >
+		<flow-ref doc:name="Flow Reference" doc:id="952d0bda-9e93-49b4-a6aa-9f02e642db26" name="generate-random-text-Sub-Flow" target="random_text" />
+		<ee:transform doc:name="prepare the token payload" doc:id="1daddfcf-7856-4ceb-94f8-92afe93252af">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	id: payload."_id"."\$oid" as String,
+	email: payload.email as String,
+	random_text: vars.random_text as String,
+	action: "activate"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="e4813d03-14b3-4236-a088-62681d90a5b8" name="generate-token-Sub_Flow" target="recieved_token"/>
+		<email:send doc:name="Send" doc:id="fbc3ad0e-a22b-4933-b345-d8c4010d774a" config-ref="Hotmail_Email_SMTP" fromAddress="ReasonOfHope@hotmail.com" subject="Please verify your email">
 			<reconnect />
 			<email:to-addresses>
 				<email:to-address value="#[payload.email]" />
-				<email:to-address value="alt.y2-2oof28gl@yopmail.com" />
 			</email:to-addresses>
 			<email:body>
 				<email:content><![CDATA[#[output text/plain
 ---
-"test"]]]></email:content>
+"Subject: Welcome to Our Service, {name}!
+
+Dear {name},
+
+Thank you for signing up. Please activate your account using the code below:
+
+Activation Code: {activation_code}" ++ "\nhttp://localhost:8091/users/status/" ++  (vars.recieved_token as String) ++
+"Copy the above code and paste it in the activation field to activate your account.
+
+Thank you,
+Your Team"]]]></email:content>
 			</email:body>
 		</email:send>
-			</otherwise>
-		</choice>
 	</sub-flow>
 </mule>

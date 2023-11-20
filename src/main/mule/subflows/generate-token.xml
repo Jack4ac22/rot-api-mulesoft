@@ -11,16 +11,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
-	<flow name="generate-tokenFlow" doc:id="6f7a4ca0-a73d-4eb6-88aa-61eca25ab7a2" >
-<!-- [STUDIO:"Scheduler"]		<scheduler doc:name="Scheduler" doc:id="1b058a17-c678-45da-8ac8-ed72e6d70d4a" >
-			<scheduling-strategy >
-				<fixed-frequency frequency="1" timeUnit="MINUTES"/>
-			</scheduling-strategy>
-		</scheduler> [STUDIO] -->
-		<set-payload value='#[output application/json&#10;---&#10;{&#10;	id: "tesdt_id",&#10;	email: "test_email",&#10;	secret: "test_secret",&#10;	action: "test_action"&#10;}]' doc:name="Set Payload" doc:id="1c383839-e955-42ec-877b-567b056c704c" />
-		<flow-ref doc:name="Flow Reference" doc:id="6a15aa15-2bbe-4905-8cdb-a653c0ca4c9a" name="token-generation_Sub_Flow"/>
-	</flow>
-	<sub-flow name="token-generation_Sub_Flow" doc:id="0ea28da4-b727-47f2-b041-7de11edaf0d6" >
+	<sub-flow name="generate-token-Sub_Flow" doc:id="0ea28da4-b727-47f2-b041-7de11edaf0d6" >
 		<logger level="INFO" doc:name="start encoding token" doc:id="c689db04-a523-45ff-b17a-df747c8f659a" message="start encoding data for user #[payload.id]"/>
 		<ee:transform doc:name="encode-data" doc:id="624b5ab6-30ba-4771-a0e4-1fed1e4f1256" >
 			<ee:message >
@@ -34,10 +25,20 @@ toBase64((write(payload, "application/json")) as Binary)]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="display the token" doc:id="a6da049f-f14c-46f4-aee5-e151e90dc3ce" message="#[payload]"/>
-		<os:store doc:name="Store generated token" doc:id="5ad7991d-6e18-4ba6-99e3-2dc4dec2168f" key="#[payload.id]" objectStore="token_object_store">
-			<os:value ><![CDATA[#[vars.encoded_data]]]></os:value>
+		<choice doc:name="chose the objectStore based on the action" doc:id="88fc1e26-f773-43f7-a4c5-9517ce495d66" >
+			<when expression='#[payload.action == "login"]'>
+				<os:store doc:name="Store generated token in short term object store" doc:id="5ad7991d-6e18-4ba6-99e3-2dc4dec2168f" key="#[payload.id]" objectStore="short-term-token_object_store">
+			<os:value><![CDATA[#[vars.encoded_data]]]></os:value>
 		</os:store>
-		<logger level="INFO" doc:name="end encoding token" doc:id="3ad273f7-67b3-4015-9098-592e5e9f242e" message="end encoding data for user #[payload.id]"/>
+			</when>
+			<otherwise >
+				<os:store doc:name="Store generated token long term object store" doc:id="c3bd6182-2743-4139-9c5d-84768db8552d" key="#[payload.id]" objectStore="long-term-token_object_store" >
+					<os:value ><![CDATA[#[vars.encoded_data]]]></os:value>
+				</os:store>
+			</otherwise>
+		</choice>
+		<set-payload value="#[vars.encoded_data]" doc:name="set the token as a return payload" doc:id="2be479d9-8998-4f8f-9fee-11fa6f7357a0" />
+		<logger level="INFO" doc:name="end encoding token" doc:id="3ad273f7-67b3-4015-9098-592e5e9f242e" message="end encoding data for user #[payload]"/>
 	</sub-flow>
 
 

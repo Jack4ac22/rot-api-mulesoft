@@ -34,6 +34,7 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 			</email:properties>
 		</email:smtp-connection>
 	</email:smtp-config>
-	<os:object-store name="token_object_store" doc:name="Object store" doc:id="7f505db6-93a8-4c60-a3fe-85951f69520a" maxEntries="300" entryTtl="30" entryTtlUnit="MINUTES" expirationInterval="30" />
+	<os:object-store name="short-term-token_object_store" doc:name="Object store" doc:id="7f505db6-93a8-4c60-a3fe-85951f69520a" maxEntries="300" entryTtl="30" entryTtlUnit="MINUTES" expirationInterval="30" />
+	<os:object-store name="long-term-token_object_store" doc:name="Object store" doc:id="eeec68ae-c8b0-4fb3-9581-f8d33c8aa549" maxEntries="300" entryTtl="3" entryTtlUnit="DAYS" expirationInterval="3" expirationIntervalUnit="DAYS"/>
 
 </mule>

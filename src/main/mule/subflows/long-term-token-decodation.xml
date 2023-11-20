@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<sub-flow name="long-term-token-Sub-Flow" doc:id="7641faea-f949-41e2-a29d-e5a586241a8d" >
+		<os:contains doc:name="OS Contains the token" doc:id="0e38cb86-d2e0-4158-8bd8-9e6a803aa734" target="user_appears_in_key_store" key='#[vars.decoded_payload.id as String ++ "-" ++ vars.decoded_payload.action as String]' objectStore="long-term-token_object_store"/>
+		<logger level="INFO" doc:name="check the user's long term" doc:id="8021438b-61dc-4d7c-98d8-cc8be6b47fe7" message='user #[vars.decoded_payload.id as String ++ "-" ++ vars.decoded_payload.action as String] status in the object store is: #[vars.user_appears_in_key_store]' />
+		<choice doc:name="Choice" doc:id="a86e233a-8494-4636-923d-35cbf0662d04" >
+			<when expression="#[vars.user_appears_in_key_store]" >
+				<os:retrieve doc:name="Retrieve stored token to compare" doc:id="937daf02-9cde-4017-89f6-42a6c0b0f615" objectStore="long-term-token_object_store" key="#[vars.decoded_payload.id as String ++ &quot;-&quot; ++ vars.decoded_payload.action as String]" target="stored_token" />
+				<logger level="INFO" doc:name="retrive user's stored token" doc:id="f67dfd23-43b4-4c2f-a9e0-339a43f4863e" message='user #[vars.decoded_payload.id as String ++ "-" ++ vars.decoded_payload.action as String] stored token is: #[vars.stored_token]' />
+				<choice doc:name="Choice" doc:id="22c2eb8e-6098-4af6-b3e7-240236e0fde7" >
+					<when expression="#[payload == vars.stored_token]" >
+						<logger level="INFO" doc:name="Logger" doc:id="c9f14ec1-6b10-4695-b73c-8c12b0516a97" message="the token is refreshed in the object store for the user: #[vars.decoded_payload.id]" />
+					</when>
+					<otherwise >
+						<raise-error doc:name=" unauthorized token error" doc:id="4183b10f-dcbc-4e61-8fd9-86d81695cff2" type="Personal:SECURITY" description="un authorized token, please do not do any changes on your recieved URL." />
+					</otherwise>
+				</choice>
+			</when>
+			<otherwise >
+				<raise-error doc:name=" unauthorized user" doc:id="932acb3d-0957-447e-9b93-66ca1c77da94" type="personal:CLIENT_SECURITY" description="LogIn required" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	</mule>

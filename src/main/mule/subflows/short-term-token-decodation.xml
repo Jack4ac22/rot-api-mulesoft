@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<sub-flow name="short-term-token-sub-flow" doc:id="09449d5f-4bb4-40ab-b0c1-a84f26649bfe">
+		<os:contains doc:name="OS Contains the token" doc:id="82b78448-3ce6-4e1e-8c26-b5827b1a3891" key='#[vars.decoded_payload.id]' objectStore="short-term-token_object_store" target="user_appears_in_key_store" />
+		<logger level="INFO" doc:name="check the user's short term token" doc:id="20444b69-2584-41c2-9205-617ee3e0bef3" message="user #[vars.decoded_payload.id] status in the object store is: #[vars.user_appears_in_key_store]" />
+		<choice doc:name="Choice" doc:id="29f4a913-55b7-483c-b583-1a4fa0c33ef5">
+			<when expression="#[vars.user_appears_in_key_store]">
+				<os:retrieve doc:name="Retrieve stored token to compare" doc:id="18bbd523-ae0c-48a9-b932-a8e471503239" key='#[vars.decoded_payload.id]' objectStore="short-term-token_object_store" target="stored_token" />
+				<logger level="INFO" doc:name="retrive user's stored token" doc:id="d659560e-d191-459b-a7c0-01511011ea57" message="user #[vars.decoded_payload.id] stored token is: #[vars.stored_token]" />
+				<choice doc:name="Choice" doc:id="55b3ca02-fd0a-4805-b8c9-aa2918da89bf">
+					<when expression="#[payload == vars.stored_token]">
+						<os:store doc:name="Store generated token" doc:id="f0d6a80a-1c6a-426d-b2cb-0d99d62554ad" key="#[vars.decoded_payload.id]" objectStore="short-term-token_object_store">
+		</os:store>
+						<logger level="INFO" doc:name="Logger" doc:id="27a802ad-5a42-4764-8b64-6fc65333dfb6" message="the token is refreshed in the object store for the user: #[vars.decoded_payload.id]" />
+					</when>
+					<otherwise>
+						<raise-error doc:name=" unauthorized token error" doc:id="2925d370-7b56-4ee3-938d-04c72fe5dd8c" type="Personal:SECURITY" description="un authorized token, please do not do any changes on your recieved URL." />
+					</otherwise>
+				</choice>
+			</when>
+			<otherwise>
+				<raise-error doc:name=" unauthorized user" doc:id="201dcfd8-aa8a-40ab-8dd1-b7b523752e2e" type="personal:CLIENT_SECURITY" description="LogIn required" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	</mule>

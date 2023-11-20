@@ -77,19 +77,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.mulesoft.services</groupId>
-			<artifactId>mule-service-weave-ee</artifactId>
-			<version>2.4.0-20221212</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>2686bf73-c025-4e7a-a526-0c646f2a2471</groupId>
-			<artifactId>roh-users-interaction-sapi</artifactId>
-			<version>1.0.2</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-email-connector</artifactId>
 			<version>1.7.0</version>
@@ -112,6 +99,19 @@
 			<artifactId>mule-objectstore-connector</artifactId>
 			<version>1.2.1</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.services</groupId>
+			<artifactId>mule-service-weave-ee</artifactId>
+			<version>2.4.0-20221212</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>2686bf73-c025-4e7a-a526-0c646f2a2471</groupId>
+			<artifactId>roh-users-interaction-sapi</artifactId>
+			<version>1.0.2</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 	<repositories>
